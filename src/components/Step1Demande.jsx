@@ -1,19 +1,18 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 
 export default function Step1Demande({ onOui }) {
-  const [nonStyle, setNonStyle] = useState({})
-  const nonRef = useRef(null)
+  const [nonPos, setNonPos] = useState({ top: null, left: null })
+  const [moved, setMoved] = useState(false)
 
-  const fuyardHandler = () => {
-    const maxTop = window.innerHeight - 60
-    const maxLeft = window.innerWidth - 120
-    setNonStyle({
-      position: 'absolute',
-      top: Math.random() * maxTop + 'px',
-      left: Math.random() * maxLeft + 'px',
-      transition: 'all 0.15s ease-out',
+  const fuyardHandler = useCallback(() => {
+    const maxTop = window.innerHeight - 70
+    const maxLeft = window.innerWidth - 130
+    setNonPos({
+      top: Math.random() * maxTop,
+      left: Math.random() * maxLeft,
     })
-  }
+    setMoved(true)
+  }, [])
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 animate-fade-in-up">
@@ -26,24 +25,24 @@ export default function Step1Demande({ onOui }) {
         Veux-tu sortir avec moi ? 🌸
       </h1>
 
-      <div className="mt-10 flex flex-col items-center gap-4 relative w-full max-w-md">
+      <div className="mt-10 flex flex-col items-center gap-4 relative w-full max-w-md min-h-[160px]">
         <button
           onClick={onOui}
           className="px-10 py-4 rounded-full text-xl font-bold text-white shadow-lg hover:shadow-xl
-                     transform hover:scale-105 transition-all duration-200 cursor-pointer animate-pulse-heart"
+                     transform hover:scale-105 transition-all duration-200 cursor-pointer animate-pulse-heart z-10"
           style={{ background: 'linear-gradient(135deg, #FF69B4, #D81B60)' }}
         >
           OUI ♥
         </button>
 
         <button
-          ref={nonRef}
           onMouseEnter={fuyardHandler}
           onTouchStart={fuyardHandler}
-          style={nonStyle}
-          className="px-8 py-3 rounded-full text-lg font-medium border-2 border-gray-300 text-gray-400
+          className={`px-8 py-3 rounded-full text-lg font-medium border-2 border-gray-300 text-gray-400
                      hover:text-gray-500 hover:border-gray-400 bg-white/80 backdrop-blur cursor-pointer
-                     transition-colors duration-200"
+                     transition-colors duration-200 select-none
+                     ${moved ? 'absolute' : 'relative'}`}
+          style={moved ? { top: nonPos.top + 'px', left: nonPos.left + 'px', transition: 'top 0.2s ease-out, left 0.2s ease-out' } : {}}
         >
           Non...
         </button>

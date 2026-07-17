@@ -1,12 +1,11 @@
 import { useState } from 'react'
 
 function obtenirDateMinimale() {
-  const aujourd = new Date()
-  return aujourd.toISOString().split('T')[0]
+  return '2026-08-17'
 }
 
 const heures = []
-for (let h = 17; h <= 23; h++) {
+for (let h = 8; h <= 23; h++) {
   for (let m = 0; m < 60; m += 30) {
     heures.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`)
   }
